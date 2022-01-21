@@ -1,19 +1,24 @@
-import React from "react";
-import axios from "axios";
-import { useState } from "react";
-import DisplayWeatherData from "../DisplayWeatherData/DisplayWeatherData";
+import React, { useState } from 'react';
+import DisplayWeatherData from '../DisplayWeatherData/DisplayWeatherData.js';
+import axios from 'axios';
+// import {
+//     textInput,
+//     Radio,
+//     Button
+// } from './GetWeatherData.module.css';
 
 const GetWeatherData = () => {
 
-  const [responseObj, setResponseObj] = useState({}); 
+    let [city, setCity] = useState('');
+    let [unit, setUnit] = useState('imperial');
+    let [responseObj, setResponseObj] = useState({});
 
-  const apiKey = "7bdbfb7799ae2ccaf862515d0e38d2ea";
+    const apiKey = "7bdbfb7799ae2ccaf862515d0e38d2ea";
 
-  // Got the Api response
-  // Need to display  the response on the page, BUT, need the varibale, which returns JSX value, to persist even when that triggers a re-render. SO, need to use useState.
-  // We create a response variable to hold the API info and code to update it by using useState
-
-  const WeatherApiCall = () => {
+function getForecast(event) {
+  event.preventDefault();
+    
+    const uriEncodedCity = encodeURIComponent(city);
 
     axios({
       url: "https://api.openweathermap.org/data/2.5/weather",
@@ -28,17 +33,51 @@ const GetWeatherData = () => {
       .catch((error) => {
       console.log(error);
       })
+      
+          return (
+              <div>
+                  <h2>Find Current Weather Conditions</h2>
+                  <form onSubmit={getForecast}>
+                      <input
+                          type="text"
+                          placeholder="Enter City"
+                          maxLength="50"
+                          className="textInput"
+                          value={city}
+                          onChange={(event) => setCity(event.target.value)}
+                          />
+                      <label className="Radio">
+                          <input
+                              type="radio"
+                              name="units"
+                              checked={unit === "imperial"}
+                              value="imperial"
+                              onChange={(event) => setUnit(event.target.value)}
+                              />
+                          Fahrenheit
+                      </label>
+                      <label className="Radio">
+                          <input
+                              type="radio"
+                              name="units"
+                              checked={unit === "metric"}
+                              value="metric"
+                              onChange={(event) => setUnit(event.target.value)}
+                              />
+                          Celcius
+                      </label>
+      
+                      <button className="Button" type="submit">Get Forecast</button>
+                  </form>
+                  <DisplayWeatherData
+                     responseObj={responseObj}
+                     
+                     />
+              </div>
+          )
   }
 
-  return (
-    <div>
-      <h2>Current Weather Conditions</h2>
-      <button onClick={WeatherApiCall}>Get Current Weather Data</button>
-      <DisplayWeatherData
-      responseObj={responseObj}/>
-    </div>
-  );
-
 }
+
 
 export default GetWeatherData;
