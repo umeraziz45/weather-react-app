@@ -9,16 +9,16 @@ import axios from 'axios';
 
 const GetWeatherData = () => {
 
-    let [city, setCity] = useState('');
-    let [unit, setUnit] = useState('imperial');
+    // let [city, setCity] = useState('');
+    // let [unit, setUnit] = useState('imperial');
     let [responseObj, setResponseObj] = useState({});
 
     const apiKey = "7bdbfb7799ae2ccaf862515d0e38d2ea";
 
-function getForecast(event) {
-  event.preventDefault();
+  const getForecast = (event) => {
+    event.preventDefault();
     
-    const uriEncodedCity = encodeURIComponent(city);
+    
 
     axios({
       url: "https://api.openweathermap.org/data/2.5/weather",
@@ -29,7 +29,7 @@ function getForecast(event) {
         appid: apiKey
       }
     }).then( (response) =>  response.data )
-      .then( (weatherData) => { { setResponseObj(weatherData) } })
+      .then( (weatherData) => {  setResponseObj(weatherData)  })
       .catch((error) => {
       console.log(error);
       })
@@ -37,7 +37,7 @@ function getForecast(event) {
           return (
               <div>
                   <h2>Find Current Weather Conditions</h2>
-                  <form onSubmit={getForecast}>
+                  {/* <form onSubmit={getForecast}>
                       <input
                           type="text"
                           placeholder="Enter City"
@@ -68,7 +68,7 @@ function getForecast(event) {
                       </label>
       
                       <button className="Button" type="submit">Get Forecast</button>
-                  </form>
+                  </form> */}
                   <DisplayWeatherData
                      responseObj={responseObj}
                      
